@@ -6,11 +6,15 @@ import AddResource from "./AddResource.js";
 import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
+//enivronment varibles
 const PORT = process.env.PORT;
 const DATABASE = process.env.DATABASE;
+//instance of the express
 const app = express();
+//middlewares
 app.use(cors());
 app.use(bodyParser.json());
+//mongodb connection
 mongoose.connect(DATABASE);
 app.get("/", (req, res) => {
   res.send("resolut database is active now");
@@ -26,7 +30,7 @@ app.get("/allresource", async (req, res) => {
   const allResource = await AddResource.find();
   res.json(allResource);
 });
-//here I am saving the user in the database in mongodb
+//register user in the database
 app.post("/registeruser", async (req, res) => {
   const user = new User({
     username: req.body.username,
