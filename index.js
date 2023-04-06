@@ -21,10 +21,15 @@ app.get("/users", async (req, res) => {
   console.log(users);
   res.json(users);
 });
+//get all the resource present in the database
+app.get("/allresource", async (req, res) => {
+  const allResource = await AddResource.find();
+  res.json(allResource);
+});
 //here I am saving the user in the database in mongodb
 app.post("/registeruser", async (req, res) => {
   const user = new User({
-    name: req.body.name,
+    username: req.body.username,
     email: req.body.email,
     password: req.body.password,
   });
@@ -38,10 +43,14 @@ app.post("/registeruser", async (req, res) => {
 //add the resource in the database
 app.post("/addresource", async (req, res) => {
   const addedResource = new AddResource({
-    name: req.body.name,
+    id: req.body.id,
+    username: req.body.username,
     email: req.body.email,
     designation: req.body.designation,
     password: req.body.password,
+    today: req.body.today,
+    billable: req.body.billable,
+    nonbillable: req.body.nonbillable,
   });
   try {
     const savedResource = await addedResource.save();
@@ -67,6 +76,26 @@ app.post("/loginuser", async (req, res) => {
   } catch (err) {
     res.json(err);
   }
+});
+//delete data from the database
+app.delete("/allresource/:id", async (req, res) => {
+  await AddResource.deleteOne({ id: req.params.id });
+  res.json("record deleted");
+  console.log("data removed");
+});
+//update the record
+app.put("/allresource/:id", async (req, res) => {
+  await AddResource.updateOne(
+    { id: req.params.id },
+    {
+      $set: {
+        username: req.body.username,
+        email: req.body.email,
+        designation: req.body.designation,
+      },
+    }
+  );
+  res.json("data is updated");
 });
 app.listen(PORT, () => {
   console.log(`server is running at PORT no ${PORT}`);
