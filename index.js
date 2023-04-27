@@ -96,6 +96,9 @@ app.put("/allresource/:id", async (req, res) => {
         username: req.body.username,
         email: req.body.email,
         designation: req.body.designation,
+        today: req.body.today,
+        billable: req.body.billable,
+        nonbillable: req.body.nonbillable,
       },
     }
   );
